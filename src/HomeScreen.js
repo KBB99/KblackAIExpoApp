@@ -49,6 +49,7 @@ export default class HomeScreen extends React.Component {
     this.setState({loading:true})
     await this._pickImage()
     if (this.state.image == ''){
+      this.setState({loading:false})
       return
     }
     var xhr = new XMLHttpRequest();
