@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, Platform, Alert, Modal, FlatList, ActivityIndicator } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Platform, Alert, Modal, FlatList, ActivityIndicator, Dimensions } from 'react-native';
 import { Camera, Permissions, ImagePicker, Linking } from 'expo';
 
 export default class HomeScreen extends React.Component {
@@ -137,6 +137,7 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
+    let {height, width} = Dimensions.get('window')
       return (
         <View style={{ flex: 1}}>
           <Modal
@@ -145,7 +146,8 @@ export default class HomeScreen extends React.Component {
           visible={this.state.modalVisible}
           onRequestClose={() => {}}
           >
-            <TouchableOpacity style={{flex:1,justifyContent: 'space-around'}} onPress={()=>this.setState({modalVisible:false})} activeOpacity={1}>
+            <TouchableOpacity style={{width:"100%",height:(height-300)/2}} onPress={()=>this.setState({modalVisible:false})} />
+            <View style={{flex:1,justifyContent: 'space-around'}}>
               <View style={styles.resultBox}>
                 <FlatList
                   data={
@@ -154,9 +156,9 @@ export default class HomeScreen extends React.Component {
                   keyExtractor={(item, index)=>index.toString()}
                   renderItem={ ({item}) =>(
                     <View style={{height:100,flexDirection:"row",alignItems: "center"}}>
-                      <View style={{flexDirection:"column",width:200}}>
+                      <TouchableOpacity style={{flexDirection:"column",width:200}} onPress={()=>this.linkTo(item.name)}>
                         <Text style={{alignSelf:"center",color:"white",fontWeight:"500",fontSize:20}}>{item.name}</Text>
-                      </View>
+                      </TouchableOpacity>
                       <View style={{flexDirection:"column",width:100}}>
                         <View style={{alignItems:"center",justifyContent:"space-around",backgroundColor:"#374785",borderRadius:38,height:76,width:76}}>
                           <Text style={{color:"white",fontWeight:"700"}}> {item.probability}% </Text>
@@ -167,7 +169,8 @@ export default class HomeScreen extends React.Component {
                   }
                 />
               </View>
-            </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={{width:"100%",height:(height-300)/2}} onPress={()=>this.setState({modalVisible:false})}/>
           </Modal>
           <Modal
           animationType="fade"
